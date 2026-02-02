@@ -76,6 +76,7 @@ if (isset($_GET['auth']) && $_GET['auth'] === 'registered') {
     </nav>
 </header>
 
+<main id="main">
 <section id="home" class="hero">
     <div class="hero-content">
         <h1>Mirësevini në të Ardhmen e Kriptovalutave</h1>
@@ -88,7 +89,8 @@ if (isset($_GET['auth']) && $_GET['auth'] === 'registered') {
     </div>
 </section>
 
-<div class="stats">
+<section class="stats" aria-labelledby="stats-title">
+    <h2 class="sr-only" id="stats-title">Statistikat</h2>
     <div class="stat-item">
         <div class="stat-number"><?= number_format($userCount) ?></div>
         <div class="stat-label">Përdorues Aktivë</div>
@@ -108,7 +110,7 @@ if (isset($_GET['auth']) && $_GET['auth'] === 'registered') {
         <div class="stat-number">99.9%</div>
         <div class="stat-label">Uptime</div>
     </div>
-</div>
+</section>
 
 <section id="features" class="features">
     <h2 class="section-title">Veçoritë Futuriste</h2>
@@ -361,6 +363,7 @@ if (isset($_GET['auth']) && $_GET['auth'] === 'registered') {
         </form>
     </div>
 </section>
+</main>
 
 <footer>
     <div class="footer-content">
