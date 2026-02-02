@@ -1,4 +1,4 @@
-const cryptoData = [
+constconst cryptoData = [
     { name: "Bitcoin", symbol: "BTC", price: 40000, change: 0, volume: 5000000 },
     { name: "Ethereum", symbol: "ETH", price: 2500, change: 0, volume: 3000000 },
     { name: "Solana", symbol: "SOL", price: 150, change: 0, volume: 1000000 },
@@ -14,25 +14,33 @@ function updateTable() {
         const randomChange = (Math.random() * 4 - 2).toFixed(2);
         crypto.change = parseFloat(randomChange);
         crypto.price = (crypto.price * (1 + crypto.change / 100)).toFixed(2);
+
         const row = document.createElement('tr');
+
         const nameCell = document.createElement('td');
-        nameCell.innerHTML = `<div class="crypto-name"><strong>${crypto.name}</strong><span class="crypto-symbol">${crypto.symbol}</span></div>`;
+        nameCell.innerHTML = `<div class="crypto-name"><strong>${crypto.name}</strong> <span class="crypto-symbol">${crypto.symbol}</span></div>`;
+
         const priceCell = document.createElement('td');
         priceCell.textContent = "$" + parseFloat(crypto.price).toLocaleString();
+
         const changeCell = document.createElement('td');
         changeCell.textContent = crypto.change + "%";
         changeCell.className = crypto.change > 0 ? 'positive' : crypto.change < 0 ? 'negative' : '';
         changeCell.style.fontWeight = 'bold';
+
         const volumeCell = document.createElement('td');
         volumeCell.textContent = "$" + crypto.volume.toLocaleString();
+
         const trendCell = document.createElement('td');
         trendCell.textContent = crypto.change > 0 ? '📈' : crypto.change < 0 ? '📉' : '➡️';
         trendCell.style.fontSize = '20px';
+
         row.appendChild(nameCell);
         row.appendChild(priceCell);
         row.appendChild(changeCell);
         row.appendChild(volumeCell);
         row.appendChild(trendCell);
+
         tbody.appendChild(row);
     });
 }
@@ -41,13 +49,7 @@ updateTable();
 setInterval(updateTable, 3000);
 
 document.getElementById('exploreBtn').addEventListener('click', () => {
-    const user = localStorage.getItem("cryptoUser");
-    if(!user){
-        alert("Ju lutem kyçuni fillimisht 🔒");
-        loginModal.style.display = "flex";
-        return;
-    }
-    document.getElementById("market").scrollIntoView({behavior:"smooth"});
+    document.getElementById('market').scrollIntoView({ behavior: 'smooth' });
 });
 
 document.querySelectorAll('nav a').forEach(link => {
@@ -72,7 +74,7 @@ scrollTopBtn.addEventListener('click', () => {
 
 document.getElementById('contactForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    alert('Faleminderit për mesazhin tuaj! Do t\'ju kontaktojmë së shpejti.');
+    alert("Faleminderit për mesazhin tuaj! Do t'ju kontaktojmë së shpejti.");
     e.target.reset();
 });
 
@@ -87,130 +89,50 @@ const animateStats = () => {
     const statsSection = document.querySelector('.stats');
     const statsPosition = statsSection.getBoundingClientRect().top;
     const screenPosition = window.innerHeight;
-    if(statsPosition < screenPosition){
+    if (statsPosition < screenPosition) {
         statsSection.style.opacity = '1';
         statsSection.style.transform = 'translateY(0)';
     }
 };
 window.addEventListener('scroll', animateStats);
 
-// ================= LOGIN SYSTEM =================
-
-const loginBtn = document.getElementById("loginBtn");
-const loginModal = document.getElementById("loginModal");
-const closeLogin = document.getElementById("closeLogin");
-
-const loginForm = document.getElementById("loginForm");
-const loginEmail = document.getElementById("loginEmail");
-const loginPassword = document.getElementById("loginPassword");
-const loginError = document.getElementById("loginError");
-
-
-// Kontrollo nese user eshte loguar
-function checkLogin(){
-
-    const user = localStorage.getItem("cryptoUser");
-
-    if(user){
-
-        loginModal.style.display = "none";
-        document.body.style.overflow = "auto";
-
-        loginBtn.textContent =
-            "Logout (" + user.split("@")[0] + ")";
-
-    }else{
-
-        loginModal.style.display = "flex";
-        document.body.style.overflow = "hidden";
-
-        loginBtn.textContent = "Login";
-
-    }
-
-}
-
-
-// Kur hapet faqja
-window.addEventListener("load", () => {
-
-    checkLogin();
-
-});
-
-
-// Klik Login / Logout
-loginBtn.addEventListener("click", () => {
-
-    const user = localStorage.getItem("cryptoUser");
-
-    if(user){
-
-        if(confirm("Dëshiron të dalësh?")){
-
-            localStorage.removeItem("cryptoUser");
-
-            checkLogin();
-
+function slideInCards() {
+    const featureCards = document.querySelectorAll('.features-grid .feature-card');
+    const whyCards = document.querySelectorAll('.why-grid .why-card');
+    const allCards = [...featureCards, ...whyCards];
+    allCards.forEach((card, index) => {
+        const cardTop = card.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        if(cardTop < windowHeight - 100) {
+            setTimeout(() => { card.classList.add('visible'); }, index * 150);
         }
+    });
+}
+window.addEventListener('scroll', slideInCards);
+window.addEventListener('load', slideInCards);
 
-    }else{
+const loginEmailPage = document.getElementById("loginEmailPage");
+const loginPasswordPage = document.getElementById("loginPasswordPage");
+const loginBtnPage = document.getElementById("loginBtnPage");
+const loginErrorPage = document.getElementById("loginErrorPage");
+const loginSection = document.getElementById("loginSection");
 
-        loginModal.style.display = "flex";
-        document.body.style.overflow = "hidden";
+loginBtnPage.addEventListener("click", () => {
+    const email = loginEmailPage.value.trim();
+    const password = loginPasswordPage.value.trim();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    }
-
-});
-
-
-// Mbylle modalin
-closeLogin.addEventListener("click", () => {
-
-    loginModal.style.display = "none";
-
-    document.body.style.overflow = "auto";
-
-});
-
-
-// Login submit
-loginForm.addEventListener("submit", e => {
-
-    e.preventDefault();
-
-    const email = loginEmail.value.trim();
-    const pass = loginPassword.value.trim();
-
-
-    if(!email.includes("@")){
-
-        loginError.textContent =
-            "Email jo valid!";
-
+    if(!regex.test(email)){
+        loginErrorPage.textContent = "Email jo valid!";
         return;
-
     }
-
-
-    if(pass.length < 6){
-
-        loginError.textContent =
-            "Password minimum 6 karaktere!";
-
+    if(password.length < 6){
+        loginErrorPage.textContent = "Password duhet të ketë min 6 karaktere!";
         return;
-
     }
-
 
     localStorage.setItem("cryptoUser", email);
-
-    loginError.textContent = "";
-
-    loginForm.reset();
-
-    checkLogin();
-
+    loginErrorPage.textContent = "";
+    loginSection.style.display = "none";
+    alert("Kyçu me sukses ✅");
 });
-
-
