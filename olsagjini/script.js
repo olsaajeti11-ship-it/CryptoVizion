@@ -156,13 +156,32 @@ loginForm.addEventListener("submit", e => {
 });
 
 function updateUserUI(){
+
     const user = localStorage.getItem("cryptoUser");
+
     if(user){
+
+        loginModal.style.display = "none";
+        document.body.style.overflow = "auto";
+
+        document.querySelectorAll("body > :not(#loginModal)")
+        .forEach(el => el.style.display = "block");
+
         loginBtn.textContent = "Logout (" + user.split("@")[0] + ")";
-    } else {
+
+    }else{
+
+        loginModal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+
+        document.querySelectorAll("body > :not(#loginModal)")
+        .forEach(el => el.style.display = "none");
+
         loginBtn.textContent = "Login";
     }
+
 }
+
 
 function slideInCards() {
     const featureCards = document.querySelectorAll('.features-grid .feature-card');
@@ -181,3 +200,4 @@ function slideInCards() {
 
 window.addEventListener('scroll', slideInCards);
 window.addEventListener('load', slideInCards);
+
