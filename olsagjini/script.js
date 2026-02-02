@@ -94,68 +94,20 @@ const animateStats = () => {
 };
 window.addEventListener('scroll', animateStats);
 
+// ================= LOGIN SYSTEM =================
+
 const loginBtn = document.getElementById("loginBtn");
 const loginModal = document.getElementById("loginModal");
 const closeLogin = document.getElementById("closeLogin");
+
 const loginForm = document.getElementById("loginForm");
+const loginEmail = document.getElementById("loginEmail");
+const loginPassword = document.getElementById("loginPassword");
 const loginError = document.getElementById("loginError");
 
-window.addEventListener("load", () => {
-    const user = localStorage.getItem("cryptoUser");
-    if(!user){
-        document.body.style.overflow = "hidden";
-        loginModal.style.display = "flex";
-    } else {
-        document.body.style.overflow = "auto";
-    }
-    updateUserUI();
-});
 
-loginBtn.addEventListener("click", () => {
-    const user = localStorage.getItem("cryptoUser");
-    if(user){
-        if(confirm("Dëshiron të dalësh?")){
-            localStorage.removeItem("cryptoUser");
-            updateUserUI();
-            document.body.style.overflow = "hidden";
-            loginModal.style.display = "flex";
-        }
-    } else {
-        loginModal.style.display = "flex";
-    }
-});
-
-closeLogin.addEventListener("click", () => {
-    loginModal.style.display = "none";
-});
-
-window.addEventListener("click", e => {
-    if(e.target === loginModal){
-        loginModal.style.display = "none";
-    }
-});
-
-loginForm.addEventListener("submit", e => {
-    e.preventDefault();
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailRegex.test(email)){
-        loginError.textContent = "Email jo valid!";
-        return;
-    }
-    if(password.length < 6){
-        loginError.textContent = "Password min 6 karaktere!";
-        return;
-    }
-    localStorage.setItem("cryptoUser", email);
-    loginModal.style.display = "none";
-    document.body.style.overflow = "auto";
-    updateUserUI();
-    alert("Login u krye me sukses ✅");
-});
-
-function updateUserUI(){
+// Kontrollo nese user eshte loguar
+function checkLogin(){
 
     const user = localStorage.getItem("cryptoUser");
 
@@ -164,40 +116,101 @@ function updateUserUI(){
         loginModal.style.display = "none";
         document.body.style.overflow = "auto";
 
-        document.querySelectorAll("body > :not(#loginModal)")
-        .forEach(el => el.style.display = "block");
-
-        loginBtn.textContent = "Logout (" + user.split("@")[0] + ")";
+        loginBtn.textContent =
+            "Logout (" + user.split("@")[0] + ")";
 
     }else{
 
         loginModal.style.display = "flex";
         document.body.style.overflow = "hidden";
 
-        document.querySelectorAll("body > :not(#loginModal)")
-        .forEach(el => el.style.display = "none");
-
         loginBtn.textContent = "Login";
+
     }
 
 }
 
 
-function slideInCards() {
-    const featureCards = document.querySelectorAll('.features-grid .feature-card');
-    const whyCards = document.querySelectorAll('.why-grid .why-card');
-    const allCards = [...featureCards, ...whyCards];
-    allCards.forEach((card, index) => {
-        const cardTop = card.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        if(cardTop < windowHeight - 100){
-            setTimeout(() => {
-                card.classList.add('visible');
-            }, index * 150);
-        }
-    });
-}
+// Kur hapet faqja
+window.addEventListener("load", () => {
 
-window.addEventListener('scroll', slideInCards);
-window.addEventListener('load', slideInCards);
+    checkLogin();
+
+});
+
+
+// Klik Login / Logout
+loginBtn.addEventListener("click", () => {
+
+    const user = localStorage.getItem("cryptoUser");
+
+    if(user){
+
+        if(confirm("Dëshiron të dalësh?")){
+
+            localStorage.removeItem("cryptoUser");
+
+            checkLogin();
+
+        }
+
+    }else{
+
+        loginModal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+
+    }
+
+});
+
+
+// Mbylle modalin
+closeLogin.addEventListener("click", () => {
+
+    loginModal.style.display = "none";
+
+    document.body.style.overflow = "auto";
+
+});
+
+
+// Login submit
+loginForm.addEventListener("submit", e => {
+
+    e.preventDefault();
+
+    const email = loginEmail.value.trim();
+    const pass = loginPassword.value.trim();
+
+
+    if(!email.includes("@")){
+
+        loginError.textContent =
+            "Email jo valid!";
+
+        return;
+
+    }
+
+
+    if(pass.length < 6){
+
+        loginError.textContent =
+            "Password minimum 6 karaktere!";
+
+        return;
+
+    }
+
+
+    localStorage.setItem("cryptoUser", email);
+
+    loginError.textContent = "";
+
+    loginForm.reset();
+
+    checkLogin();
+
+});
+
 
