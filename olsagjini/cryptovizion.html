@@ -7,45 +7,42 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <div id="loginOverlay">
+<div id="loginModal" class="login-modal">
+
     <div class="login-box">
-        <h2>Ju lutem, kyçuni për të përdorur faqen</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button id="loginBtn">Login</button>
-        <p id="loginError"></p>
-    </div>
-</div>
 
-<div id="loginModal" class="modal">
-    <div class="modal-content">
-
-        <span id="closeLogin" class="close">&times;</span>
+        <span id="closeLogin">&times;</span>
 
         <h2>Login</h2>
 
         <form id="loginForm">
 
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="loginEmail" required>
-            </div>
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Email"
+                required
+            >
 
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="loginPassword" required>
-            </div>
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Password"
+                required
+            >
 
-            <p id="loginError" class="error"></p>
-
-            <button type="submit" class="btn btn-primary" style="width:100%">
+            <button type="submit">
                 Kyçu
             </button>
+
+            <p id="loginError" class="error"></p>
 
         </form>
 
     </div>
+
 </div>
+
     <header>
         <div class="logo">CryptoVizion</div>
         <nav>
@@ -54,7 +51,10 @@
             <a href="#market">Tregu</a>
             <a href="#why">Përse Ne</a>
             <a href="#contact">Kontakti</a>
-            <button class="btn btn-secondary" id="loginBtn">Login</button>
+           <button id="loginBtn" class="btn btn-secondary">
+    Login
+</button>
+
 
         </nav>
     </header>
@@ -215,4 +215,5 @@
     <script src="/script.js"></script>
 </body>
 </html>
+
 
